@@ -1,10 +1,18 @@
 #include "Platform.h"
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
+#include <SFML/Audio.hpp>
+#include <iostream>
 
 Platform::Platform(char const* title, int windowWidth, int windowHeight, int textureWidth, int textureHeight)
     : window(sf::VideoMode(windowWidth, windowHeight), title) // makes the window
 {
+
+    if (!soundBuffer.loadFromFile("audio.wav")){ 
+        std::cout << "ERROR SOUND" << std::endl; // error message if you dont have the audio
+    }
+    beep.setBuffer(soundBuffer);
+    beep.setLoop(true);
     window.setFramerateLimit(60); // set the refresh rate to 60
     texture.create(textureWidth, textureHeight);
     sprite.setTexture(texture); // adds the sprite to the texture
@@ -16,6 +24,17 @@ Platform::Platform(char const* title, int windowWidth, int windowHeight, int tex
 
 Platform::~Platform() {
     window.close();
+}
+
+void Platform::soundPlayer(bool active){
+    if (active){
+        if (beep.getStatus() != sf::Sound::Playing){ // if it's not already playing play the beep
+            beep.play();
+        }
+    }
+    else {
+        beep.stop(); // stops it
+    }
 }
 
 void Platform::update(void const* buffer, int pitch){
@@ -44,10 +63,10 @@ bool Platform::processInput(uint8_t* keys){
                     case sf::Keyboard::Num2: keys[2] = 1; break; // I just used recommended keybinds that most people use
                     case sf::Keyboard::Num3: keys[3] = 1; break;
                     case sf::Keyboard::Q: keys[4] = 1; break; 
-                    case sf::Keyboard::W: keys[5] = 1; break; 
-                    case sf::Keyboard::E: keys[6] = 1; break;
-                    case sf::Keyboard::A: keys[7] = 1; break;
-                    case sf::Keyboard::S: keys[8] = 1; break;
+                    case sf::Keyboard::W: keys[5] = 1; break;   //   1 2 3 4
+                    case sf::Keyboard::E: keys[6] = 1; break;   //   q w e r
+                    case sf::Keyboard::A: keys[7] = 1; break;   //   a s d f
+                    case sf::Keyboard::S: keys[8] = 1; break;   //   z x c v
                     case sf::Keyboard::D: keys[9] = 1; break;
                     case sf::Keyboard::Z: keys[0xA] = 1; break;
                     case sf::Keyboard::C: keys[0xB] = 1; break;
