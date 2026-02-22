@@ -6,14 +6,16 @@
 using namespace std;
 
 int main(int argc, char** argv){
-    if (argc != 4){
-		cerr << "Usage: " << argv[0] << " <Scale> <Delay> <ROM>\n"; // to run youd use ./chip8 (scale) (delay) (rom name))
-		exit(EXIT_FAILURE);
+    int videoScale = 20;
+    int cycleDelay = 2;  // when you run it Defaults to tetris
+    string romName = "Tetris.ch8";
+    if (argc == 4){      //                ./chip8 (videoScale) (delay) (name)
+        videoScale = stoi(argv[1]); // converts the typed into a int to use 
+        cycleDelay = stoi(argv[2]);
+        romName = argv[3]; // collects the other rom name you want to use instead
 	}
 
-    int videoScale = stoi(argv[1]); // converts the typed into a int to use 
-    int cycleDelay = stoi(argv[2]);
-    char const* romName = argv[3]; // collects the name
+
 
     Platform platform ("Chip 8 emulator", VIDEO_WIDTH * videoScale, VIDEO_HEIGHT * videoScale, VIDEO_WIDTH, VIDEO_HEIGHT);
 
@@ -38,6 +40,12 @@ int main(int argc, char** argv){
 
 			platform.update(chip8.video, videoPitch); // updates the video screen
 		}
+        if (chip8.soundTimer > 0){ 
+            platform.soundPlayer(true); // plays sound/beep
+        } 
+        else {
+            platform.soundPlayer(false);
+        }
 	}
 
     return 0;
