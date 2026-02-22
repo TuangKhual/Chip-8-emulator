@@ -1,4 +1,5 @@
 # Chip-8-emulator
+BUILT AND RAN IN LINUX
 My first emulator project and helped me understand
 - Opcodes
 - How to use sfml
