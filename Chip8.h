@@ -16,11 +16,12 @@ class Chip8 {
     public:
 	Chip8();
 
-    void LoadRom(const char* filename);
+    void LoadRom(string filename);
 	void Cycle();
 
 	uint8_t keypad[16]{};
 	uint32_t video[64 * 32]{};
+	uint8_t soundTimer{};
 
 	private:
 	void Table0();
@@ -36,7 +37,6 @@ class Chip8 {
 	uint16_t stack[16]{};
 	uint8_t sp{};
 	uint8_t delayTimer{};
-	uint8_t soundTimer{};
 	uint16_t opcode;
 
 	default_random_engine randGen;
